@@ -1,15 +1,11 @@
-import { canvasCenter } from "./consts";
-import { drawHexagon, RADIUS } from "./hexagon";
+import { canvasCenter, DIST_FROM_CIRCLE } from "./consts";
+import { CenterHexagon } from "./hexagon";
 import { input } from "./input";
-import { drawSegmentedHexagon } from "./map";
+import { drawMap } from "./map";
 import { Player } from "./player";
 
-const DIST_FROM_CIRCLE = 92;
-
-// @ts-ignore
-const keystrokesEl = document.getElementById("keystrokes");
-
 let player = new Player(canvasCenter.x, canvasCenter.y, DIST_FROM_CIRCLE);
+let centerHexagon = new CenterHexagon();
 
 let rotateDirection = 0;
 let rotateSpeed = 0;
@@ -56,18 +52,25 @@ const render = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
 	ctx.rotate(rotateSpeed * rotateDirection);
 	ctx.translate(-canvas.width / 2, -canvas.height / 2);
 
-	drawSegmentedHexagon(ctx, canvas);
-	drawHexagon(ctx, canvasCenter.x, canvasCenter.y, RADIUS);
+	drawMap(ctx, canvas);
+	// drawCenterHexagon(ctx, canvasCenter.x, canvasCenter.y, RADIUS);
+	centerHexagon.draw(ctx, canvasCenter.x, canvasCenter.y);
 	player.draw(ctx);
 
 	// debug stuff
-	// ctx.beginPath();
-	// ctx.arc(canvasCenter.x, canvasCenter.y, DIST_FROM_CIRCLE, 0, Math.PI * 2);
-	// ctx.strokeStyle = "rgb(155,155,155, 0.2)";
-	// ctx.stroke();
+	handleDebug(ctx);
 
 	// ctx.restore();
 };
 
 // @ts-ignore
 const cleanup = (canvas: HTMLCanvasElement) => {};
+
+const handleDebug = (ctx: CanvasRenderingContext2D) => {
+	//draw player debug
+	ctx.beginPath();
+	ctx.arc(canvasCenter.x, canvasCenter.y, DIST_FROM_CIRCLE, 0, Math.PI * 2);
+	ctx.strokeStyle = "rgb(155,155,155, 0.2)";
+	ctx.stroke();
+	ctx.closePath();
+};

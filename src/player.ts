@@ -1,9 +1,11 @@
-const TILT_ACCEL = 0.05;
-const FRICTION = 0.8;
+const TILT_ACCEL = 0.9;
+const FRICTION = 0.81;
 
 const TIP_LENGTH = 9;
 const BASE_WIDTH = 27;
 const BASE_DEPTH = 8;
+
+const BASE_SPEED = 8;
 export class Player {
 	x: number;
 	y: number;
@@ -20,7 +22,7 @@ export class Player {
 		this.centerY = centerY;
 		this.radius = radius;
 		this.angle = 0;
-		this.angularSpeed = 8;
+		this.angularSpeed = BASE_SPEED;
 		this.color = color;
 		this.tilt = 0;
 

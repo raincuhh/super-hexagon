@@ -1,4 +1,4 @@
-export function drawSegmentedHexagon(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+export function drawMap(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 	const SIDES = 6;
 	const ANGLE = (2 * Math.PI) / SIDES;
 	const RADIUS = Math.min(canvas.width, canvas.height) / 1;
