@@ -1,6 +1,7 @@
 import "./style.css";
 import { mainLoop } from "./loop";
 import { canvasH, canvasW } from "./consts";
+import { handleInput } from "./input";
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -24,6 +25,8 @@ const main = () => {
 		return;
 	}
 	ctx = context;
+
+	handleInput();
 
 	requestAnimationFrame(loop);
 };

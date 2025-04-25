@@ -1,7 +1,18 @@
-export const getInput = () => {
-	let input;
+export const input = {
+	left: false,
+	right: false,
+};
 
-	document.addEventListener("keydown", (event) => {
-		console.log(event.key);
+export const handleInput = () => {
+	window.addEventListener("keydown", (e) => {
+		if (e.code == "ArrowLeft" || e.code == "KeyA") input.left = true;
+		if (e.code == "ArrowRight" || e.code == "KeyD") input.right = true;
+		// console.log("KEY DOWN:", e.code, input);
+	});
+
+	window.addEventListener("keyup", (e) => {
+		if (e.code === "ArrowLeft" || e.code === "KeyA") input.left = false;
+		if (e.code === "ArrowRight" || e.code === "KeyD") input.right = false;
+		// console.log("KEY UP:", e.code, input);
 	});
 };
