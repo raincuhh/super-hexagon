@@ -1,3 +1,4 @@
+// @ts-ignore
 import "./style.css";
 import { mainLoop } from "./loop";
 import { canvasH, canvasW } from "./consts";
