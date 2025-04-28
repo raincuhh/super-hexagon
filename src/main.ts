@@ -8,6 +8,7 @@ let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
 let lastTime = performance.now();
+let running: boolean = false;
 
 const main = () => {
 	const canvasEl = document.getElementById("canvas") as HTMLCanvasElement | null;
@@ -26,7 +27,7 @@ const main = () => {
 		return;
 	}
 	ctx = context;
-
+	running = true;
 	handleInput();
 
 	requestAnimationFrame(loop);
@@ -36,7 +37,7 @@ const loop = (time: number) => {
 	const deltaTime = (time - lastTime) / 1000;
 	lastTime = time;
 
-	mainLoop(deltaTime, ctx, canvas);
+	mainLoop(deltaTime, ctx, canvas, running);
 	requestAnimationFrame(loop);
 };
 

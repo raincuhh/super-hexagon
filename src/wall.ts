@@ -1,4 +1,4 @@
-const WALL_SPEED = 200;
+import { WALL_SPEED } from "./consts";
 
 export class Wall {
 	side: number;
@@ -8,7 +8,7 @@ export class Wall {
 	color: string;
 	isDead = false;
 
-	constructor(side: number, startRadius: number, thickness: number = 40, color: string = "white") {
+	constructor(side: number, startRadius: number, thickness: number = 50, color: string = "white") {
 		this.side = side;
 		this.radius = startRadius;
 		this.thickness = thickness;
@@ -43,5 +43,8 @@ export class Wall {
 
 		ctx.fillStyle = this.color;
 		ctx.fill();
+
+		ctx.strokeStyle = "transparent";
+		ctx.stroke();
 	}
 }
