@@ -12,21 +12,19 @@ export class ExtendedSpiralPattern implements IPattern {
 		this.delayPerWall = delayPerWall;
 	}
 
-	update(dt: number, walls: Wall[]) {
-		if (this.finished) return;
+	update(dt: number): Wall[] {
+		if (this.finished) return [];
 
 		this.timer += dt;
+		if (this.timer < this.delayPerWall) return [];
 
-		if (this.timer >= this.delayPerWall) {
-			this.timer = 0;
+		this.timer = 0;
+		const side = this.index % 6;
+		const wall = new Wall(side, PATTERN_SPAWN_RADIUS);
+		this.index++;
+		if (this.index >= 12) this.finished = true;
 
-			walls.push(new Wall(this.index % 6, PATTERN_SPAWN_RADIUS));
-			this.index++;
-
-			if (this.index >= 12) {
-				this.finished = true;
-			}
-		}
+		return [wall];
 	}
 
 	isFinished() {
