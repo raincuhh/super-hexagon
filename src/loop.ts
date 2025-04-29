@@ -5,15 +5,18 @@ import { Map } from "./map";
 import { Player } from "./player";
 import { drawGameOverScreen } from "./reset";
 import { WallGenerator } from "./wallGenerator";
+import { Timer } from "./timer";
 
 let player: Player = new Player(canvasCenter.x, canvasCenter.y, DIST_FROM_CIRCLE);
-let centerHexagon: CenterHexagon = new CenterHexagon();
+const centerHexagon: CenterHexagon = new CenterHexagon();
 const map: Map = new Map();
 const wallGenerator: WallGenerator = new WallGenerator();
+const timer: Timer = new Timer();
 
 let hasLost: boolean = false;
 let rotateDirection: number = 0;
 let rotateSpeed: number = 0;
+let time = 0;
 
 const getRandomIntervalDuration = () => Math.floor(Math.random() * 3.5) + 1;
 const getRandomRotationSpeed = () => 0.001 + Math.random() * (0.05 - 0.02);
@@ -27,11 +30,12 @@ export const mainLoop = (
 ) => {
 	if (isNaN(dt) || dt <= 0 || !running || hasLost) return;
 
+	time += dt;
 	update(canvas, dt);
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	render(ctx, canvas);
+	render(ctx, canvas, time);
 
 	if (hasLost) {
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -42,19 +46,27 @@ export const mainLoop = (
 const update = (canvas: HTMLCanvasElement, dt: number) => {
 	player.update(dt, input);
 	wallGenerator.update(dt, canvas);
+	timer.update();
 	checkWallCollisions();
 };
 
-const render = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-	ctx.save();
+const render = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, time: number) => {
+	const rotation = rotateSpeed * rotateDirection;
+
+	// ctx.save();
 	ctx.translate(canvas.width / 2, canvas.height / 2);
-	ctx.rotate(rotateSpeed * rotateDirection);
+	ctx.rotate(rotation);
 	ctx.translate(-canvas.width / 2, -canvas.height / 2);
 
-	map.draw(ctx, canvas);
+	map.draw(ctx, canvas, time);
 	centerHexagon.draw(ctx, canvasCenter.x, canvasCenter.y);
 	player.draw(ctx);
 	wallGenerator.draw(ctx, canvasCenter.x, canvasCenter.y);
+
+	// ctx.save();
+	// ctx.setTransform(1, 0, 0, 1, 0, 0);
+	timer.draw(ctx, canvas);
+	// ctx.restore();
 
 	// debug
 	// handleDebug(ctx);
@@ -128,8 +140,8 @@ window.addEventListener("keydown", (e) => {
 const restartGame = () => {
 	hasLost = false;
 	player = new Player(canvasCenter.x, canvasCenter.y, DIST_FROM_CIRCLE);
-	centerHexagon = new CenterHexagon();
 	wallGenerator.reset?.();
+	timer.reset?.();
 
 	rotateDirection = getRandomDir();
 	rotateSpeed = getRandomRotationSpeed();
